@@ -43,9 +43,8 @@ function crearParrafoTienda(textoLabel, valorMin){
     return elementoParrafo;
 }
 
-function extrerNumeroDesdeElemento(elemento) {
-    let miElemento = document.getElementById(elemento);
-    let miTexto = miElemento.value;
+function extraerNumeroDesdeElemento(elemento) {
+    let miTexto = elemento.value;
     let miNumero = Number(miTexto);
 
     return miNumero;
@@ -53,17 +52,27 @@ function extrerNumeroDesdeElemento(elemento) {
 
 function calcular(){
     let ventas = [];
+    let posicionVentas = 0;
+    let elementosVentas = document.getElementById('itemsTiendas')
 
-    ventas[0] = extrerNumeroDesdeElemento("ventasTienda1");    
-    ventas[1] = extrerNumeroDesdeElemento("ventasTienda2");    
-    ventas[2] = extrerNumeroDesdeElemento("ventasTienda3");    
-    ventas[3] = extrerNumeroDesdeElemento("ventasTienda4");    
-    ventas[4] = extrerNumeroDesdeElemento("ventasTienda5");    
-    ventas[5] = extrerNumeroDesdeElemento("ventasTienda6");    
+    for(let item of elementosVentas.children){
+        let valorVenta = extraerNumeroDesdeElemento(item.children[1])
+        ventas[posicionVentas] = valorVenta;
+        posicionVentas = posicionVentas + 1;
+    }  
 
     let totalVentas = sumarTotal(ventas);
     let ventaMayor = calcularMayor(ventas);
     let ventaMenor = calcularMenor(ventas);
+
+    for(let item of elementosVentas.children){
+        item.children.className="cualquiera";
+        if (Number(item.children[1].value) == ventaMayor){
+            item.children[1].className="numeroMayor";
+        }else if(Number(item.children[1].value) == ventaMenor){
+            item.children[1].className="numeroMenor";
+        }
+    }
 
     let mensajeSalida = "Total Ventas: " + totalVentas +
                         " / Venta Mayor: " + ventaMayor +
